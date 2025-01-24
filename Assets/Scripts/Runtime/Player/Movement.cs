@@ -96,7 +96,7 @@ namespace BubbleWand.Player {
         }
 
         void CalculateTargetVelocity() {
-            intendedMovement = input["Movement"].ReadValue<Vector2>();
+            intendedMovement = input["Move"].ReadValue<Vector2>();
             targetVelocity = character.transform.rotation * new Vector3(intendedMovement.x, 0, intendedMovement.y);
             targetVelocity *= currentSpeed;
             if (targetVelocity != Vector3.zero) {
