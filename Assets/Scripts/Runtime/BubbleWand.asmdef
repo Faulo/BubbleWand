@@ -4,7 +4,10 @@
     "references": [
         "Slothsoft.UnityExtensions",
         "Unity.Timeline",
-        "Unity.TextMeshPro"
+        "Unity.TextMeshPro",
+        "Cinemachine",
+        "Unity.InputSystem",
+        "MyBox"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

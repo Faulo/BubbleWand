@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-namespace BubbleWand {
+namespace BubbleWand.UI {
     [ExecuteAlways]
     sealed class VersionDisplay : MonoBehaviour {
         [SerializeField]
