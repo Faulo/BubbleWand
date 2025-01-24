@@ -1,10 +1,11 @@
-# Franken Game Jam 2024
-A game about snails on the road.
+# Global Game Jam 2025
+?
 
 ## Credits
-- Katharina Broswik (3d art, tech art)
-- Daniel Schulz (programming, game design)
-- Gregor Sönnichsen (level design)
+- Alexander Grzimek (3d art)
+- Bettina Feibel (level design)
+- Daniel Schulz (programming)
+- Katharina Broswik (tech art)
 
 ### Third-party assets
 - [Slothsoft's Unity Extensions](https://github.com/Faulo/UnityExtensions)
