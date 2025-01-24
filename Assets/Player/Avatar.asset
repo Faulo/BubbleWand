@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39ae70672aa781240a0eb580fcb66ae9, type: 3}
   m_Name: Avatar
   m_EditorClassIdentifier: 
-  asset: {fileID: 0}
+  asset: {fileID: 11400000}
   walkingSpeed: 5
   runningSpeed: 12
   speedOverForward:
@@ -39,25 +39,25 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  smoothingTime: 1
-  metersPerStep: 1
+  smoothingTime: 0.125
+  metersPerStep: 2
   jumpGravityMultiplier: 1
-  jumpStartSpeed: {x: 1, y: 1}
-  jumpShortStopSpeed: {x: 1, y: 1}
-  jumpMediumStopSpeed: {x: 1, y: 1}
-  jumpLongStopSpeed: {x: 1, y: 1}
+  jumpStartSpeed: {x: -2, y: 9}
+  jumpShortStopSpeed: {x: 2, y: 4}
+  jumpMediumStopSpeed: {x: 1, y: 4}
+  jumpLongStopSpeed: {x: -1, y: 4}
   shortJumpInputDuration: 0.1
   mediumJumpInputDuration: 0.2
-  shortJumpExecutionDuration: 0.25
-  mediumJumpExecutionDuration: 0.5
-  longJumpExecutionDuration: 0.75
-  cameraSpeed: {x: 1, y: 1}
-  cameraSmoothing: 1
-  cameraMinX: -90
-  cameraMaxX: 90
+  shortJumpExecutionDuration: 0.1
+  mediumJumpExecutionDuration: 0.2
+  longJumpExecutionDuration: 0.4
+  cameraSpeed: {x: 0.25, y: 0.5}
+  cameraSmoothing: 0.0625
+  cameraMinX: -120
+  cameraMaxX: 60
   defaultFieldOfView: 75
-  runningFieldOfView: 90
-  fieldOfViewSmoothingTime: 1
+  runningFieldOfView: 85
+  fieldOfViewSmoothingTime: 0.25
   onJumpCountChanged:
     m_PersistentCalls:
       m_Calls: []
