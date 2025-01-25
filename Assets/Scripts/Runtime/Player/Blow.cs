@@ -41,7 +41,9 @@ namespace BubbleWand.Player {
 
         GameObject bubble;
 
-        void UpdateBlowing(bool isBlowing, float deltaTime) {
+        void UpdateBlowing(float blowing, float deltaTime) {
+            bool isBlowing = blowing > settings.minBlowVolume;
+
             if (isBlowing) {
                 if (!bubble) {
                     bubble = UnityObject.Instantiate(settings.bubblePrefab, mouth);
@@ -53,6 +55,11 @@ namespace BubbleWand.Player {
             } else {
                 if (bubble) {
                     bubble.transform.parent = null;
+
+                    if (bubble.TryGetComponent<Rigidbody>(out var rigidbody)) {
+                        rigidbody.AddForce(settings.bubbleEjectScaling.Evaluate(blowing) * settings.bubbleEjectSpeed * mouth.forward, ForceMode.VelocityChange);
+                    }
+
                     bubble = default;
                 }
             }
@@ -65,7 +72,7 @@ namespace BubbleWand.Player {
         );
 
         public void Update(float deltaTime) {
-            UpdateBlowing(value >settings.minBlowVolume, deltaTime);
+            UpdateBlowing(value, deltaTime);
         }
     }
 }
