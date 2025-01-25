@@ -12,7 +12,6 @@ namespace BubbleWand.Player {
         readonly AvatarSettings settings;
         readonly InputActionMap input;
         readonly Transform mouth;
-        readonly Transform eyes;
 
         public Blow(IAvatar avatar, AvatarSettings settings, InputActionMap input, Transform mouth) {
             this.avatar = avatar;
@@ -41,10 +40,12 @@ namespace BubbleWand.Player {
 
         GameObject bubble;
 
-        void UpdateBlowing(float blowing, float deltaTime) {
-            bool isBlowing = blowing > settings.minBlowVolume;
+        public bool isBlowing { get; private set; }
 
-            if (isBlowing) {
+        void UpdateBlowing(float blowing, float deltaTime) {
+            isBlowing = blowing > settings.minBlowVolume;
+
+            if (isBlowing && avatar.isAiming) {
                 if (!bubble) {
                     bubble = UnityObject.Instantiate(settings.bubblePrefab, mouth);
                     bubble.transform.localScale = Vector3.zero;
@@ -63,13 +64,23 @@ namespace BubbleWand.Player {
 
                     bubble = default;
                 }
+
+                if (isBlowing) {
+                    var air = UnityObject.Instantiate(settings.airPrefab, mouth.transform.position, mouth.transform.rotation);
+                    air.transform.localScale = Vector3.one * blowing;
+
+                    if (air.TryGetComponent<Rigidbody>(out var rigidbody)) {
+                        rigidbody.AddForce(avatar.velocity * settings.bubbleVelocityMultiplier, ForceMode.VelocityChange);
+                        rigidbody.AddForce(settings.bubbleEjectScaling.Evaluate(blowing) * settings.airEjectSpeed * mouth.forward, ForceMode.VelocityChange);
+                    }
+                }
             }
         }
 
         Vector3 random => new(
-            UnityEngine.Random.Range(0.8f, 1),
-            UnityEngine.Random.Range(0.8f, 1),
-            UnityEngine.Random.Range(0.8f, 1)
+            UnityEngine.Random.Range(0.5f, 1),
+            UnityEngine.Random.Range(0.5f, 1),
+            UnityEngine.Random.Range(0.5f, 1)
         );
 
         public void Update(float deltaTime) {

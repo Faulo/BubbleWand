@@ -11,5 +11,7 @@ namespace BubbleWand.Player {
         Vector3 velocity { get; }
         int jumpCount { get; set; }
         bool isRunning { get; }
+        bool isBlowing { get; }
+        bool isAiming { get; }
     }
 }

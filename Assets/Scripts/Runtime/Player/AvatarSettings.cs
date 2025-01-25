@@ -58,6 +58,10 @@ namespace BubbleWand.Player {
 
         [Header("Blow")]
         [SerializeField]
+        public GameObject airPrefab;
+        [SerializeField]
+        public float airEjectSpeed = 10;
+        [SerializeField]
         public GameObject bubblePrefab;
         [SerializeField]
         public float minBlowVolume = 0.5f;
