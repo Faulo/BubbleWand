@@ -2,7 +2,8 @@
     "name": "BubbleWand.Editor",
     "rootNamespace": "",
     "references": [
-        "BubbleWand"
+        "BubbleWand",
+        "Unity.InputSystem"
     ],
     "includePlatforms": [
         "Editor"
