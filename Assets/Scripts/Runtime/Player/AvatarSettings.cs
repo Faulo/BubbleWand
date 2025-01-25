@@ -40,7 +40,9 @@ namespace BubbleWand.Player {
 
         [Header("Look")]
         [SerializeField]
-        public Vector2 cameraSpeed = Vector2.one;
+        public Vector2 cameraMouseSpeed = Vector2.one;
+        [SerializeField]
+        public Vector2 cameraStickSpeed = Vector2.one;
         [SerializeField, Range(0, 10)]
         public float cameraSmoothing = 1;
         [SerializeField, Range(-180, 180)]
