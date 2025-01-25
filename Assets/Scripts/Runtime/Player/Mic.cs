@@ -22,25 +22,30 @@ namespace BubbleWand.Player {
 
         const float CLIP_GAIN = 1;
 
+        protected override void OnRemoved() {
+            base.OnRemoved();
+
+            Cleanup();
+        }
+
 #if UNITY_WEBGL
-        uMicrophoneWebGL.MicrophoneWebGL _mic;
+        uMicrophoneWebGL.MicrophoneWebGL mic;
+
         void UpdateVolume() {
-            if (_mic) {
+            if (mic) {
                 return;
             }
 
-            var mic = UnityEngine.Object.FindFirstObjectByType<uMicrophoneWebGL.MicrophoneWebGL>();
-            if (!mic) {
-                return;
-            }
-
-            if (!mic.isRecording) {
-                return;
-            }
+            mic = new GameObject().AddComponent<uMicrophoneWebGL.MicrophoneWebGL>();
 
             mic.dataEvent.AddListener(HandleData);
+        }
 
-            _mic = mic;
+        void Cleanup() {
+            if (mic) {
+                UnityEngine.Object.Destroy(mic.gameObject);
+                mic = null;
+            }
         }
 #else
         AudioClip clip;
@@ -54,6 +59,14 @@ namespace BubbleWand.Player {
 
             if (clip.GetData(clipData, 0)) {
                 HandleData(clipData);
+            }
+        }
+
+        void Cleanup() {
+            if (clip) {
+                Microphone.End(null);
+                UnityEngine.Object.Destroy(clip);
+                clip = null;
             }
         }
 #endif
