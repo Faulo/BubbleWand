@@ -9,3 +9,4 @@
 
 ### Third-party assets
 - [Slothsoft's Unity Extensions](https://github.com/Faulo/UnityExtensions)
+- [uMicrophoneWebGL](https://github.com/hecomi/uMicrophoneWebGL)
