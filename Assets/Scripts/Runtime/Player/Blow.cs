@@ -50,13 +50,13 @@ namespace BubbleWand.Player {
             var emission = blowParticles.emission;
             emission.rateOverTime = 0;
 
-            if (isBlowing && avatar.isAiming) {
+            if (isBlowing && avatar.isAiming && (!bubble || bubble.transform.localScale.z < settings.maxBlowSize)) {
                 if (!bubble) {
                     bubble = UnityObject.Instantiate(settings.bubblePrefab, mouth);
-                    bubble.transform.localScale = Vector3.zero;
+                    bubble.transform.localScale = Vector3.one * settings.startBlowSize;
                 }
 
-                bubble.transform.localScale += random * deltaTime;
+                bubble.transform.localScale += deltaTime * settings.blowGain * random;
                 bubble.transform.SetPositionAndRotation(mouth.position + (mouth.forward * bubble.transform.localScale.z), mouth.rotation);
             } else {
                 if (bubble) {
@@ -65,6 +65,10 @@ namespace BubbleWand.Player {
                     if (bubble.TryGetComponent<Rigidbody>(out var rigidbody)) {
                         rigidbody.AddForce(avatar.velocity * settings.bubbleVelocityMultiplier, ForceMode.VelocityChange);
                         rigidbody.AddForce(settings.bubbleEjectScaling.Evaluate(blowing) * settings.bubbleEjectSpeed * mouth.forward, ForceMode.VelocityChange);
+
+                        if (bubble.transform.localScale.z < settings.minBlowSize) {
+                            rigidbody.excludeLayers = 1 << LayerMask.NameToLayer("Player");
+                        }
                     }
 
                     bubble = default;

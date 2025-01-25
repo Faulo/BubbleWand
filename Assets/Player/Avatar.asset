@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Avatar
   m_EditorClassIdentifier: 
   asset: {fileID: 11400000}
-  walkingSpeed: 5
-  runningSpeed: 12
+  walkingSpeed: 4
+  runningSpeed: 8
   speedOverForward:
     serializedVersion: 2
     m_Curve:
@@ -41,7 +41,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   smoothingTime: 0.125
   metersPerStep: 2
-  jumpGravityMultiplier: 1
+  jumpGravityMultiplier: 0.75
   jumpStartSpeed: {x: -2, y: 9}
   jumpShortStopSpeed: {x: 2, y: 4}
   jumpMediumStopSpeed: {x: 1, y: 4}
@@ -66,6 +66,10 @@ MonoBehaviour:
   airParticleSpeed: 5
   bubblePrefab: {fileID: 6169005033551245349, guid: 487e88ef466f0cf41b5fd82caf9218f9,
     type: 3}
+  startBlowSize: 0.125
+  minBlowSize: 0.5
+  maxBlowSize: 2
+  blowGain: 2
   minBlowVolume: 0.25
   bubbleEjectScaling:
     serializedVersion: 2

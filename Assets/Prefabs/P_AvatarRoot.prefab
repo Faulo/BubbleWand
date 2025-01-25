@@ -5197,7 +5197,7 @@ GameObject:
   - component: {fileID: 2369551791210461989}
   - component: {fileID: 4337955129766682519}
   - component: {fileID: 3690133952951848023}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Avatar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
