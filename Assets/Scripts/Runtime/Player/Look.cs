@@ -2,6 +2,7 @@ using System;
 using Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
 
 namespace BubbleWand.Player {
     [Serializable]
@@ -17,14 +18,19 @@ namespace BubbleWand.Player {
         float horizontalTargetAngle;
         float horizontalSpeed;
         void UpdateHorizontalAngle(float deltaTime) {
-            horizontalCurrentAngle = Mathf.SmoothDampAngle(
-                horizontalCurrentAngle,
-                horizontalTargetAngle,
-                ref horizontalSpeed,
-                settings.cameraSmoothing,
-                float.PositiveInfinity,
-                deltaTime
-            );
+            if (isMouseLook) {
+                horizontalCurrentAngle = Mathf.SmoothDampAngle(
+                    horizontalCurrentAngle,
+                    horizontalTargetAngle,
+                    ref horizontalSpeed,
+                    settings.cameraSmoothing,
+                    float.PositiveInfinity,
+                    deltaTime
+                );
+            } else {
+                horizontalCurrentAngle += horizontalSpeed * deltaTime;
+            }
+
             body.localRotation = Quaternion.Euler(0, horizontalCurrentAngle, 0);
         }
 
@@ -32,14 +38,20 @@ namespace BubbleWand.Player {
         float verticalTargetAngle;
         float verticalSpeed;
         void UpdateVerticalAngle(float deltaTime) {
-            verticalCurrentAngle = Mathf.SmoothDampAngle(
-                verticalCurrentAngle,
-                verticalTargetAngle,
-                ref verticalSpeed,
-                settings.cameraSmoothing,
-                float.PositiveInfinity,
-                deltaTime
-            );
+            if (isMouseLook) {
+                verticalCurrentAngle = Mathf.SmoothDampAngle(
+                    verticalCurrentAngle,
+                    verticalTargetAngle,
+                    ref verticalSpeed,
+                    settings.cameraSmoothing,
+                    float.PositiveInfinity,
+                    deltaTime
+                );
+            } else {
+                verticalCurrentAngle += verticalSpeed * deltaTime;
+                verticalCurrentAngle = Mathf.Clamp(verticalCurrentAngle, settings.cameraMinX, settings.cameraMaxX);
+            }
+
             eyes.localRotation = Quaternion.Euler(verticalCurrentAngle, 0, 0);
         }
 
@@ -91,13 +103,25 @@ namespace BubbleWand.Player {
             input["Menu"].performed -= HandleMenu;
         }
 
-        void HandleLook(InputAction.CallbackContext context) {
-            if (isLocked) {
-                var deltaLook = context.ReadValue<Vector2>() * settings.cameraSpeed;
+        bool isMouseLook;
 
-                horizontalTargetAngle += deltaLook.x;
-                verticalTargetAngle -= deltaLook.y;
-                verticalTargetAngle = Mathf.Clamp(verticalTargetAngle, settings.cameraMinX, settings.cameraMaxX);
+        void HandleLook(InputAction.CallbackContext context) {
+            isMouseLook = context.control is DeltaControl;
+
+            if (isMouseLook) {
+                if (isLocked) {
+                    var deltaLook = context.ReadValue<Vector2>() * settings.cameraMouseSpeed;
+
+                    horizontalTargetAngle += deltaLook.x;
+                    verticalTargetAngle -= deltaLook.y;
+                    verticalTargetAngle = Mathf.Clamp(verticalTargetAngle, settings.cameraMinX, settings.cameraMaxX);
+
+                }
+            } else {
+                var targetSpeed = context.ReadValue<Vector2>() * settings.cameraStickSpeed;
+
+                horizontalSpeed = targetSpeed.x;
+                verticalSpeed = targetSpeed.y;
             }
         }
 
@@ -106,11 +130,9 @@ namespace BubbleWand.Player {
         }
 
         public void Update(float deltaTime) {
-            if (isLocked) {
-                UpdateHorizontalAngle(deltaTime);
-                UpdateVerticalAngle(deltaTime);
-                UpdateFOV(deltaTime);
-            }
+            UpdateHorizontalAngle(deltaTime);
+            UpdateVerticalAngle(deltaTime);
+            UpdateFOV(deltaTime);
         }
     }
 }
