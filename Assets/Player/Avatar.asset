@@ -60,6 +60,32 @@ MonoBehaviour:
   fieldOfViewSmoothingTime: 0.25
   bubblePrefab: {fileID: 6169005033551245349, guid: 487e88ef466f0cf41b5fd82caf9218f9,
     type: 3}
+  minBlowVolume: 0.5
+  bubbleEjectScaling:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  bubbleEjectSpeed: 1
   onJumpCountChanged:
     m_PersistentCalls:
       m_Calls: []
