@@ -5,20 +5,21 @@ using UnityObject = UnityEngine.Object;
 
 namespace BubbleWand.Player {
     [Serializable]
-    public class Blow : IUpdatable, IDisposable {
+    sealed class Blow : IUpdatable, IDisposable {
         public static float value;
 
         readonly IAvatar avatar;
         readonly AvatarSettings settings;
         readonly InputActionMap input;
         readonly Transform mouth;
-        readonly Transform eyes;
+        readonly ParticleSystem blowParticles;
 
-        public Blow(IAvatar avatar, AvatarSettings settings, InputActionMap input, Transform mouth) {
+        public Blow(IAvatar avatar, AvatarSettings settings, InputActionMap input, Transform mouth, ParticleSystem blowParticles) {
             this.avatar = avatar;
             this.settings = settings;
             this.input = input;
             this.mouth = mouth;
+            this.blowParticles = blowParticles;
 
             RegisterInput();
         }
@@ -41,16 +42,21 @@ namespace BubbleWand.Player {
 
         GameObject bubble;
 
-        void UpdateBlowing(float blowing, float deltaTime) {
-            bool isBlowing = blowing > settings.minBlowVolume;
+        public bool isBlowing { get; private set; }
 
-            if (isBlowing) {
+        void UpdateBlowing(float blowing, float deltaTime) {
+            isBlowing = blowing > settings.minBlowVolume;
+
+            var emission = blowParticles.emission;
+            emission.rateOverTime = 0;
+
+            if (isBlowing && avatar.isAiming && (!bubble || bubble.transform.localScale.z < settings.maxBlowSize)) {
                 if (!bubble) {
                     bubble = UnityObject.Instantiate(settings.bubblePrefab, mouth);
-                    bubble.transform.localScale = Vector3.zero;
+                    bubble.transform.localScale = Vector3.one * settings.startBlowSize;
                 }
 
-                bubble.transform.localScale += random * deltaTime;
+                bubble.transform.localScale += deltaTime * settings.blowGain * random;
                 bubble.transform.SetPositionAndRotation(mouth.position + (mouth.forward * bubble.transform.localScale.z), mouth.rotation);
             } else {
                 if (bubble) {
@@ -59,17 +65,34 @@ namespace BubbleWand.Player {
                     if (bubble.TryGetComponent<Rigidbody>(out var rigidbody)) {
                         rigidbody.AddForce(avatar.velocity * settings.bubbleVelocityMultiplier, ForceMode.VelocityChange);
                         rigidbody.AddForce(settings.bubbleEjectScaling.Evaluate(blowing) * settings.bubbleEjectSpeed * mouth.forward, ForceMode.VelocityChange);
+
+                        if (bubble.transform.localScale.z < settings.minBlowSize) {
+                            rigidbody.excludeLayers = 1 << LayerMask.NameToLayer("Player");
+                        }
                     }
 
                     bubble = default;
+                }
+
+                if (isBlowing) {
+                    emission.rateOverTime = blowing * settings.airParticleMultiplier;
+                    var main = blowParticles.main;
+                    main.startSpeedMultiplier = blowing * settings.airParticleSpeed;
+
+                    var air = UnityObject.Instantiate(settings.airPrefab, mouth.transform.position, mouth.transform.rotation);
+
+                    if (air.TryGetComponent<Rigidbody>(out var rigidbody)) {
+                        rigidbody.AddForce(avatar.velocity * settings.bubbleVelocityMultiplier, ForceMode.VelocityChange);
+                        rigidbody.AddForce(settings.bubbleEjectScaling.Evaluate(blowing) * settings.airEjectSpeed * mouth.forward, ForceMode.VelocityChange);
+                    }
                 }
             }
         }
 
         Vector3 random => new(
-            UnityEngine.Random.Range(0.8f, 1),
-            UnityEngine.Random.Range(0.8f, 1),
-            UnityEngine.Random.Range(0.8f, 1)
+            UnityEngine.Random.value,
+            UnityEngine.Random.value,
+            UnityEngine.Random.value
         );
 
         public void Update(float deltaTime) {

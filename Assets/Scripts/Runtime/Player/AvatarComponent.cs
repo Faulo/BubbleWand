@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace BubbleWand.Player {
-    public class AvatarComponent : MonoBehaviour, IAvatar {
+    sealed class AvatarComponent : MonoBehaviour, IAvatar {
         [Header("MonoBehaviour Configuration")]
         [SerializeField, Expandable]
         InputActionAsset controls = default;
@@ -20,6 +20,8 @@ namespace BubbleWand.Player {
         [SerializeField, Expandable]
         Transform mouth = default;
         [SerializeField, Expandable]
+        ParticleSystem blowParticles = default;
+        [SerializeField, Expandable]
         CinemachineVirtualCamera cinemachineCamera = default;
 
         [Header("Unity Configuration")]
@@ -29,6 +31,7 @@ namespace BubbleWand.Player {
         Movement movement;
         Look look;
         Blow blow;
+        Aim aim;
 
         public event Action<ControllerColliderHit> onControllerColliderHit;
         public event Action onJumpCountChanged;
@@ -38,6 +41,9 @@ namespace BubbleWand.Player {
         public Vector3 position => eyes.position;
         public Quaternion rotation => eyes.rotation;
         public bool isRunning => movement.isRunning;
+        public bool isBlowing => blow.isBlowing;
+        public bool isAiming => aim.isAiming;
+
         [SerializeField]
         int m_jumpCount = 1;
         public int jumpCount {
@@ -52,41 +58,43 @@ namespace BubbleWand.Player {
 
         Mic mic;
 
-        protected void Awake() {
+        void Awake() {
             controls = Instantiate(controls);
             movement = new Movement(this, settings, controls.FindActionMap("Player"), character);
             look = new Look(this, settings, controls.FindActionMap("Player"), body, eyes, cinemachineCamera);
-            blow = new Blow(this, settings, controls.FindActionMap("Player"), mouth);
+            blow = new Blow(this, settings, controls.FindActionMap("Player"), mouth, blowParticles);
+            aim = new Aim(this, settings, controls.FindActionMap("Player"));
 
             onJumpCountChanged += () => settings.onJumpCountChanged.Invoke(gameObject);
         }
 
-        protected void OnEnable() {
+        void OnEnable() {
             mic = InputSystem.AddDevice<Mic>();
             controls.Enable();
         }
 
-        protected void OnDisable() {
+        void OnDisable() {
             controls.Disable();
             InputSystem.RemoveDevice(mic);
         }
 
-        protected void OnDestroy() {
+        void OnDestroy() {
             movement.Dispose();
             look.Dispose();
             blow.Dispose();
+            aim.Dispose();
         }
-        protected void Update() {
+        void Update() {
             if (updateMethod == UpdateMethod.Update) {
                 UpdateAvatar(Time.deltaTime);
             }
         }
-        protected void FixedUpdate() {
+        void FixedUpdate() {
             if (updateMethod == UpdateMethod.FixedUpdate) {
                 UpdateAvatar(Time.deltaTime);
             }
         }
-        protected void LateUpdate() {
+        void LateUpdate() {
             if (updateMethod == UpdateMethod.LateUpdate) {
                 UpdateAvatar(Time.deltaTime);
             }
@@ -96,7 +104,7 @@ namespace BubbleWand.Player {
             movement.Update(deltaTime);
             blow.Update(deltaTime);
         }
-        protected void OnControllerColliderHit(ControllerColliderHit hit) {
+        void OnControllerColliderHit(ControllerColliderHit hit) {
             onControllerColliderHit?.Invoke(hit);
         }
     }
