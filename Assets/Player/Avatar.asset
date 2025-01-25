@@ -51,7 +51,7 @@ MonoBehaviour:
   shortJumpExecutionDuration: 0.1
   mediumJumpExecutionDuration: 0.2
   longJumpExecutionDuration: 0.4
-  cameraMouseSpeed: {x: 1, y: 1}
+  cameraMouseSpeed: {x: 0.2, y: 0.15}
   cameraStickSpeed: {x: 150, y: -100}
   cameraSmoothing: 0.0625
   cameraMinX: -120
