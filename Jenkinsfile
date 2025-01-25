@@ -21,7 +21,7 @@ pipeline {
 
 						// automatically run dotnet format
 						TEST_FORMATTING = '1'
-						FORMATTING_EXCLUDE = 'Library Assets/Plugins'
+						FORMATTING_EXCLUDE = 'Library Assets/Plugins Packages'
 
 						// which executables to create
 						BUILD_FOR_WINDOWS = '1'
