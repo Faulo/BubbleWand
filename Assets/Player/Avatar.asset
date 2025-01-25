@@ -87,6 +87,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   bubbleEjectSpeed: 1
+  bubbleVelocityMultiplier: 1
   onJumpCountChanged:
     m_PersistentCalls:
       m_Calls: []

@@ -8,14 +8,14 @@ namespace BubbleWand.Player {
     public class Blow : IUpdatable, IDisposable {
         public static float value;
 
-        readonly AvatarComponent avatarComponent;
+        readonly IAvatar avatar;
         readonly AvatarSettings settings;
         readonly InputActionMap input;
         readonly Transform mouth;
         readonly Transform eyes;
 
-        public Blow(AvatarComponent avatarComponent, AvatarSettings settings, InputActionMap input, Transform mouth) {
-            this.avatarComponent = avatarComponent;
+        public Blow(IAvatar avatar, AvatarSettings settings, InputActionMap input, Transform mouth) {
+            this.avatar = avatar;
             this.settings = settings;
             this.input = input;
             this.mouth = mouth;
@@ -57,6 +57,7 @@ namespace BubbleWand.Player {
                     bubble.transform.parent = null;
 
                     if (bubble.TryGetComponent<Rigidbody>(out var rigidbody)) {
+                        rigidbody.AddForce(avatar.velocity * settings.bubbleVelocityMultiplier, ForceMode.VelocityChange);
                         rigidbody.AddForce(settings.bubbleEjectScaling.Evaluate(blowing) * settings.bubbleEjectSpeed * mouth.forward, ForceMode.VelocityChange);
                     }
 

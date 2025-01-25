@@ -29,6 +29,7 @@ namespace BubbleWand.Player {
                 );
             } else {
                 horizontalCurrentAngle += horizontalSpeed * deltaTime;
+                horizontalTargetAngle = horizontalCurrentAngle;
             }
 
             body.localRotation = Quaternion.Euler(0, horizontalCurrentAngle, 0);
@@ -39,6 +40,8 @@ namespace BubbleWand.Player {
         float verticalSpeed;
         void UpdateVerticalAngle(float deltaTime) {
             if (isMouseLook) {
+                verticalTargetAngle = Mathf.Clamp(verticalTargetAngle, settings.cameraMinX, settings.cameraMaxX);
+
                 verticalCurrentAngle = Mathf.SmoothDampAngle(
                     verticalCurrentAngle,
                     verticalTargetAngle,
@@ -50,6 +53,7 @@ namespace BubbleWand.Player {
             } else {
                 verticalCurrentAngle += verticalSpeed * deltaTime;
                 verticalCurrentAngle = Mathf.Clamp(verticalCurrentAngle, settings.cameraMinX, settings.cameraMaxX);
+                verticalTargetAngle = verticalCurrentAngle;
             }
 
             eyes.localRotation = Quaternion.Euler(verticalCurrentAngle, 0, 0);
@@ -114,8 +118,6 @@ namespace BubbleWand.Player {
 
                     horizontalTargetAngle += deltaLook.x;
                     verticalTargetAngle -= deltaLook.y;
-                    verticalTargetAngle = Mathf.Clamp(verticalTargetAngle, settings.cameraMinX, settings.cameraMaxX);
-
                 }
             } else {
                 var targetSpeed = context.ReadValue<Vector2>() * settings.cameraStickSpeed;

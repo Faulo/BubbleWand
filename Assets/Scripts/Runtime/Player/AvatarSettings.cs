@@ -65,6 +65,8 @@ namespace BubbleWand.Player {
         public AnimationCurve bubbleEjectScaling = AnimationCurve.Constant(0, 1, 1);
         [SerializeField]
         public float bubbleEjectSpeed = 10;
+        [SerializeField]
+        public float bubbleVelocityMultiplier = 1;
 
         [Header("Events")]
         [SerializeField]
