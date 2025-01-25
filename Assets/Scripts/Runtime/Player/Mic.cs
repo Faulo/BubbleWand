@@ -20,44 +20,67 @@ namespace BubbleWand.Player {
 
         public AxisControl volume { get; private set; }
 
-        const int CLIP_DURATION = 1;
-        const int CLIP_SAMPLE_DIVIDER = 8;
-        const int CLIP_FREQUENCY = 44100;
-        const float CLIP_MAX_VOLUME = 1f;
+        const float CLIP_GAIN = 1;
 
+#if UNITY_WEBGL
+        uMicrophoneWebGL.MicrophoneWebGL _mic;
+        void UpdateVolume() {
+            if (_mic) {
+                return;
+            }
+
+            var mic = UnityEngine.Object.FindFirstObjectByType<uMicrophoneWebGL.MicrophoneWebGL>();
+            if (!mic) {
+                return;
+            }
+
+            if (!mic.isRecording) {
+                return;
+            }
+
+            mic.dataEvent.AddListener(HandleData);
+
+            _mic = mic;
+        }
+#else
         AudioClip clip;
         float[] clipData;
 
-        float GetMicrophoneVolume() {
+        void UpdateVolume() {
             if (!clip) {
-                return 0;
+                clip = Microphone.Start(null, true, 1, 44100);
+                clipData = new float[clip.samples * clip.channels];
             }
 
-            clipData ??= new float[clip.samples * clip.channels];
-
-            if (!clip.GetData(clipData, 0)) {
-                return 0;
+            if (clip.GetData(clipData, 0)) {
+                HandleData(clipData);
             }
-
-            float max = 0f;
-            for (int i = 0; i < clipData.Length / CLIP_SAMPLE_DIVIDER; i++) {
-                float sample = clipData[i] * clipData[i];
-                max = Mathf.Max(max, sample / CLIP_MAX_VOLUME);
-            }
-
-            return Mathf.Clamp01(max);
         }
+#endif
+
+        void HandleData(float[] clipData) {
+            float max = 0f;
+            for (int i = 0; i < clipData.Length; i++) {
+                float sample = Mathf.Abs(clipData[i]);
+                sample *= CLIP_GAIN;
+                max = Mathf.Max(max, sample);
+            }
+
+            currentVolume = Mathf.Clamp01(max);
+        }
+
+        float currentVolume = 0;
 
         protected override void FinishSetup() {
             base.FinishSetup();
 
             volume = GetChildControl<AxisControl>(nameof(volume));
-
-            clip = Microphone.Start(null, true, CLIP_DURATION, CLIP_FREQUENCY);
         }
 
         public void OnNextUpdate() {
-            InputState.Change(volume, GetMicrophoneVolume(), InputState.currentUpdateType);
+            UpdateVolume();
+
+            InputState.Change(volume, currentVolume, InputState.currentUpdateType);
         }
 
         public unsafe void OnStateEvent(InputEventPtr eventPtr) {
