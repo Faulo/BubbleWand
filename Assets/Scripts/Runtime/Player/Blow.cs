@@ -48,9 +48,7 @@ namespace BubbleWand.Player {
             isBlowing = blowing > settings.minBlowVolume;
 
             var emission = blowParticles.emission;
-            emission.rateOverTime = blowing * settings.airParticleMultiplier;
-            var main = blowParticles.main;
-            main.startSpeedMultiplier = blowing * settings.airParticleSpeed;
+            emission.rateOverTime = 0;
 
             if (isBlowing && avatar.isAiming) {
                 if (!bubble) {
@@ -73,6 +71,10 @@ namespace BubbleWand.Player {
                 }
 
                 if (isBlowing) {
+                    emission.rateOverTime = blowing * settings.airParticleMultiplier;
+                    var main = blowParticles.main;
+                    main.startSpeedMultiplier = blowing * settings.airParticleSpeed;
+
                     var air = UnityObject.Instantiate(settings.airPrefab, mouth.transform.position, mouth.transform.rotation);
 
                     if (air.TryGetComponent<Rigidbody>(out var rigidbody)) {
