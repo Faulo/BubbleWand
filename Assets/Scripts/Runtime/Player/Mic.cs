@@ -9,7 +9,7 @@ namespace BubbleWand.Player {
 #if UNITY_EDITOR
     [UnityEditor.InitializeOnLoad]
 #endif
-    public class Mic : InputDevice, IInputStateCallbackReceiver {
+    sealed class Mic : InputDevice, IInputStateCallbackReceiver {
 
         static Mic() {
             InputSystem.RegisterLayout<Mic>();

@@ -6,7 +6,7 @@ using UnityEngine.InputSystem.Controls;
 
 namespace BubbleWand.Player {
     [Serializable]
-    public class Look : IUpdatable, IDisposable {
+    sealed class Look : IUpdatable, IDisposable {
         readonly IAvatar avatar;
         readonly AvatarSettings settings;
         readonly InputActionMap input;

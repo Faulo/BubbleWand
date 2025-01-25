@@ -3,7 +3,7 @@ using UnityEngine.Events;
 
 namespace BubbleWand.Player {
     [CreateAssetMenu]
-    public class AvatarSettings : ScriptableAsset {
+    sealed class AvatarSettings : ScriptableAsset {
         [Header("Movement")]
         [SerializeField, Range(0, 100)]
         public float walkingSpeed = 5;
@@ -61,6 +61,10 @@ namespace BubbleWand.Player {
         public GameObject airPrefab;
         [SerializeField]
         public float airEjectSpeed = 10;
+        [SerializeField]
+        public float airParticleMultiplier = 1;
+        [SerializeField]
+        public float airParticleSpeed = 10;
         [SerializeField]
         public GameObject bubblePrefab;
         [SerializeField]

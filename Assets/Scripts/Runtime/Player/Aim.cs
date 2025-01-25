@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 namespace BubbleWand.Player {
     [Serializable]
-    public class Aim : IUpdatable, IDisposable {
+    sealed class Aim : IUpdatable, IDisposable {
         readonly IAvatar avatar;
         readonly AvatarSettings settings;
         readonly InputActionMap input;

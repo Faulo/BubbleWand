@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 namespace BubbleWand.Player {
     [Serializable]
-    public class Movement : IUpdatable, IDisposable {
+    sealed class Movement : IUpdatable, IDisposable {
         enum JumpState {
             NotJumping,
             ShortJump,

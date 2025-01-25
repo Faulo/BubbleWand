@@ -62,6 +62,8 @@ MonoBehaviour:
   airPrefab: {fileID: 7586497684527177413, guid: e73572fafa287804f92e1635371a0121,
     type: 3}
   airEjectSpeed: 2
+  airParticleMultiplier: 5
+  airParticleSpeed: 10
   bubblePrefab: {fileID: 6169005033551245349, guid: 487e88ef466f0cf41b5fd82caf9218f9,
     type: 3}
   minBlowVolume: 0.25

@@ -10,5 +10,11 @@ namespace BubbleWand {
                 Destroy(gameObject);
             }
         }
+
+        void OnTriggerEnter(Collider other) {
+            if (other.TryGetComponent<IAirReceiver>(out var receiver)) {
+                receiver.Receive(transform.forward, observedCompopnent.velocity.magnitude);
+            }
+        }
     }
 }
