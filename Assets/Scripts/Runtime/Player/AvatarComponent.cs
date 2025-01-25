@@ -18,6 +18,8 @@ namespace BubbleWand.Player {
         [SerializeField, Expandable]
         Transform eyes = default;
         [SerializeField, Expandable]
+        Transform mouth = default;
+        [SerializeField, Expandable]
         CinemachineVirtualCamera cinemachineCamera = default;
 
         [Header("Unity Configuration")]
@@ -26,6 +28,7 @@ namespace BubbleWand.Player {
 
         Movement movement;
         Look look;
+        Blow blow;
 
         public event Action<ControllerColliderHit> onControllerColliderHit;
         public event Action onJumpCountChanged;
@@ -47,22 +50,31 @@ namespace BubbleWand.Player {
             }
         }
 
+        Mic mic;
+
         protected void Awake() {
             controls = Instantiate(controls);
             movement = new Movement(this, settings, controls.FindActionMap("Player"), character);
             look = new Look(this, settings, controls.FindActionMap("Player"), body, eyes, cinemachineCamera);
+            blow = new Blow(this, settings, controls.FindActionMap("Player"), mouth);
 
             onJumpCountChanged += () => settings.onJumpCountChanged.Invoke(gameObject);
         }
+
         protected void OnEnable() {
+            mic = InputSystem.AddDevice<Mic>();
             controls.Enable();
         }
+
         protected void OnDisable() {
             controls.Disable();
+            InputSystem.RemoveDevice(mic);
         }
+
         protected void OnDestroy() {
             movement.Dispose();
             look.Dispose();
+            blow.Dispose();
         }
         protected void Update() {
             if (updateMethod == UpdateMethod.Update) {
@@ -82,6 +94,7 @@ namespace BubbleWand.Player {
         void UpdateAvatar(float deltaTime) {
             look.Update(deltaTime);
             movement.Update(deltaTime);
+            blow.Update(deltaTime);
         }
         protected void OnControllerColliderHit(ControllerColliderHit hit) {
             onControllerColliderHit?.Invoke(hit);
