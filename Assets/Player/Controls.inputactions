@@ -526,6 +526,17 @@
                 },
                 {
                     "name": "",
+                    "id": "74644e82-e8e9-45df-8da2-6f2eb0bff490",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Blow",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "411dd758-fbc5-40d8-9180-c072e3661f46",
                     "path": "<Mic>/volume",
                     "interactions": "",

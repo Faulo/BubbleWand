@@ -54,6 +54,10 @@ namespace BubbleWand.Player {
         [SerializeField, Range(0, 10)]
         public float fieldOfViewSmoothingTime = 1;
 
+        [Header("Blow")]
+        [SerializeField]
+        public GameObject bubblePrefab;
+
         [Header("Events")]
         [SerializeField]
         public UnityEvent<GameObject> onJumpCountChanged = new();
