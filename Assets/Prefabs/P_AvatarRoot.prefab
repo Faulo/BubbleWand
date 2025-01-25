@@ -365,7 +365,6 @@ GameObject:
   - component: {fileID: 2369551791210461989}
   - component: {fileID: 4337955129766682519}
   - component: {fileID: 3690133952951848023}
-  - component: {fileID: 7562810454441134050}
   m_Layer: 0
   m_Name: Avatar
   m_TagString: Untagged
@@ -438,35 +437,6 @@ MonoBehaviour:
   cinemachineCamera: {fileID: 4209192722813748206}
   updateMethod: 1
   m_jumpCount: 1
---- !u!114 &7562810454441134050
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6024421867004774130}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65bfef609686d44c69d900c6e5df8ba0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isAutoStart: 1
-  micIndex: 0
-  readyEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  startEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  stopEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  deviceListEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  dataEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &6503876106692548992
 GameObject:
   m_ObjectHideFlags: 0

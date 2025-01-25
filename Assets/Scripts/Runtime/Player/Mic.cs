@@ -36,7 +36,7 @@ namespace BubbleWand.Player {
                 return;
             }
 
-            mic = new GameObject().AddComponent<uMicrophoneWebGL.MicrophoneWebGL>();
+            mic = new GameObject(nameof(uMicrophoneWebGL.MicrophoneWebGL)).AddComponent<uMicrophoneWebGL.MicrophoneWebGL>();
 
             mic.dataEvent.AddListener(HandleData);
         }
