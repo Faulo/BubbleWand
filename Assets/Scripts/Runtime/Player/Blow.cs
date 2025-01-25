@@ -65,7 +65,7 @@ namespace BubbleWand.Player {
         );
 
         public void Update(float deltaTime) {
-            UpdateBlowing(value > 0.25f, deltaTime);
+            UpdateBlowing(value >settings.minBlowVolume, deltaTime);
         }
     }
 }

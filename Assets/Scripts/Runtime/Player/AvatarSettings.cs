@@ -57,6 +57,8 @@ namespace BubbleWand.Player {
         [Header("Blow")]
         [SerializeField]
         public GameObject bubblePrefab;
+        [SerializeField]
+        public float minBlowVolume = 0.5f;
 
         [Header("Events")]
         [SerializeField]
