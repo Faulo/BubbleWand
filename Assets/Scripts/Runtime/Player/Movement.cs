@@ -154,6 +154,8 @@ namespace BubbleWand.Player {
                         if (lastPlatform) {
                             lastPlatform.SendMessage(nameof(ICharacterMessages.OnJumpFromPlatform), avatar, SendMessageOptions.DontRequireReceiver);
                         }
+
+                        settings.onJumpStart.Invoke(avatar.gameObject);
                     }
 
                     break;

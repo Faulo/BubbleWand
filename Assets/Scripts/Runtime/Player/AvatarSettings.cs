@@ -86,7 +86,7 @@ namespace BubbleWand.Player {
 
         [Header("Events")]
         [SerializeField]
-        public UnityEvent<GameObject> onJumpCountChanged = new();
+        public UnityEvent<GameObject> onJumpStart = new();
         [SerializeField]
         public UnityEvent<GameObject> onStep = new();
     }

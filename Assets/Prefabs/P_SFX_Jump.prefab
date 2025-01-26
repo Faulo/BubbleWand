@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6140176546269222372}
   - component: {fileID: -6307488756455650164}
   m_Layer: 0
-  m_Name: P_SFX_Step
+  m_Name: P_SFX_Jump
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -43,9 +43,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 9b245b9e5f74b9d42bd74bfe470c9e59, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 627c12cf5709a2a4ab51b8042d6e5d9d, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.75
+  m_Volume: 1
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -143,5 +143,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_observedComponent: {fileID: 6140176546269222372}
   minPitch: 0.8
-  maxPitch: 1.2
-  offset: 0
+  maxPitch: 1
+  offset: 0.2
