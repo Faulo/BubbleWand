@@ -13,7 +13,7 @@ namespace BubbleWand.Player {
         bool isRunning { get; }
         bool isBlowing { get; }
         bool isAiming { get; }
-        bool canAim { get; }
+        bool canAim { get; set; }
 
         Rigidbody platform { get; }
     }

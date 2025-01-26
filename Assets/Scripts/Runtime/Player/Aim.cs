@@ -37,11 +37,17 @@ namespace BubbleWand.Player {
         void RegisterInput() {
             input["Aim"].started += HandleAimStart;
             input["Aim"].canceled += HandleAimCancel;
+            input["Cheat"].performed += HandleCheat;
         }
 
         void UnregisterInput() {
             input["Aim"].started -= HandleAimStart;
             input["Aim"].canceled -= HandleAimCancel;
+            input["Cheat"].performed -= HandleCheat;
+        }
+
+        void HandleCheat(InputAction.CallbackContext context) {
+            avatar.canAim = true;
         }
 
         void HandleAimStart(InputAction.CallbackContext context) {

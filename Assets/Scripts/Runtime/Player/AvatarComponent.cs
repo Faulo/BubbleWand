@@ -38,7 +38,6 @@ namespace BubbleWand.Player {
         Aim aim;
 
         public event Action<ControllerColliderHit> onControllerColliderHit;
-        public event Action onJumpCountChanged;
 
         public Vector3 forward => eyes.forward;
         public Vector3 velocity => movement.currentVelocity;
@@ -47,7 +46,7 @@ namespace BubbleWand.Player {
         public bool isRunning => movement.isRunning;
         public bool isBlowing => blow.isBlowing;
         public bool isAiming => aim.isAiming;
-        public bool canAim { get; internal set; }
+        public bool canAim { get; set; }
         public Rigidbody platform => movement.platform;
 
         [SerializeField]
@@ -57,7 +56,6 @@ namespace BubbleWand.Player {
             set {
                 if (m_jumpCount != value) {
                     m_jumpCount = value;
-                    onJumpCountChanged?.Invoke();
                 }
             }
         }
@@ -70,8 +68,6 @@ namespace BubbleWand.Player {
             look = new Look(this, settings, controls.FindActionMap("Player"), body, eyes, cinemachineCamera);
             blow = new Blow(this, settings, controls.FindActionMap("Player"), mouth, bubblePivot, blowParticles);
             aim = new Aim(this, settings, controls.FindActionMap("Player"), bubbleWand);
-
-            onJumpCountChanged += () => settings.onJumpCountChanged.Invoke(gameObject);
         }
 
         void OnEnable() {
