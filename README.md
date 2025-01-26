@@ -1,5 +1,5 @@
 # Global Game Jam 2025
-?
+As little woodland spirit you climb down into the deepest caves to do your job as the gardener of the forest.
 
 ## Credits
 - Alexander Grzimek (3d art)
