@@ -12,13 +12,15 @@ namespace BubbleWand.Player {
         readonly AvatarSettings settings;
         readonly InputActionMap input;
         readonly Transform mouth;
+        readonly Transform bubblePivot;
         readonly ParticleSystem blowParticles;
 
-        public Blow(IAvatar avatar, AvatarSettings settings, InputActionMap input, Transform mouth, ParticleSystem blowParticles) {
+        public Blow(IAvatar avatar, AvatarSettings settings, InputActionMap input, Transform mouth, Transform bubblePivot, ParticleSystem blowParticles) {
             this.avatar = avatar;
             this.settings = settings;
             this.input = input;
             this.mouth = mouth;
+            this.bubblePivot = bubblePivot;
             this.blowParticles = blowParticles;
 
             RegisterInput();
@@ -52,7 +54,7 @@ namespace BubbleWand.Player {
 
             if (isBlowing && avatar.isAiming && (!bubble || bubble.transform.localScale.z < settings.maxBlowSize)) {
                 if (!bubble) {
-                    bubble = UnityObject.Instantiate(settings.bubblePrefab, mouth);
+                    bubble = UnityObject.Instantiate(settings.bubblePrefab, bubblePivot);
                     bubble.transform.localScale = Vector3.one * settings.startBlowSize;
 
                     if (bubble.TryGetComponent<Rigidbody>(out var rigidbody)) {
@@ -61,7 +63,7 @@ namespace BubbleWand.Player {
                 }
 
                 bubble.transform.localScale += deltaTime * settings.blowGain * random;
-                bubble.transform.SetPositionAndRotation(mouth.position + (mouth.forward * bubble.transform.localScale.z), mouth.rotation);
+                bubble.transform.SetPositionAndRotation(bubblePivot.position + (0.5f * bubble.transform.localScale.z * bubblePivot.forward), bubblePivot.rotation);
             } else {
                 if (bubble) {
                     bubble.transform.parent = null;
@@ -69,7 +71,7 @@ namespace BubbleWand.Player {
                     if (bubble.TryGetComponent<Rigidbody>(out var rigidbody)) {
                         rigidbody.detectCollisions = true;
                         rigidbody.AddForce(avatar.velocity * settings.bubbleVelocityMultiplier, ForceMode.VelocityChange);
-                        rigidbody.AddForce(settings.bubbleEjectScaling.Evaluate(blowing) * settings.bubbleEjectSpeed * mouth.forward, ForceMode.VelocityChange);
+                        rigidbody.AddForce(settings.bubbleEjectScaling.Evaluate(blowing) * settings.bubbleEjectSpeed * bubblePivot.forward, ForceMode.VelocityChange);
 
                         if (bubble.transform.localScale.z < settings.minBlowSize) {
                             rigidbody.excludeLayers = 1 << LayerMask.NameToLayer("Player");

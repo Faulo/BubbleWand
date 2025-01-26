@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace BubbleWand.Player {
@@ -7,13 +8,24 @@ namespace BubbleWand.Player {
         readonly IAvatar avatar;
         readonly AvatarSettings settings;
         readonly InputActionMap input;
+        readonly Transform bubbleWand;
 
-        public bool isAiming { get; private set; }
+        bool _isAiming;
+        public bool isAiming {
+            get => _isAiming;
+            private set {
+                _isAiming = value;
+                bubbleWand.gameObject.SetActive(value);
+            }
+        }
 
-        public Aim(IAvatar avatar, AvatarSettings settings, InputActionMap input) {
+        public Aim(IAvatar avatar, AvatarSettings settings, InputActionMap input, Transform bubbleWand) {
             this.avatar = avatar;
             this.settings = settings;
             this.input = input;
+            this.bubbleWand = bubbleWand;
+
+            isAiming = false;
 
             RegisterInput();
         }
@@ -33,7 +45,7 @@ namespace BubbleWand.Player {
         }
 
         void HandleAimStart(InputAction.CallbackContext context) {
-            isAiming = true;
+            isAiming = avatar.canAim;
         }
 
         void HandleAimCancel(InputAction.CallbackContext context) {
