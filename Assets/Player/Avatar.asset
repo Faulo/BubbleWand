@@ -59,7 +59,7 @@ MonoBehaviour:
   defaultFieldOfView: 75
   runningFieldOfView: 85
   fieldOfViewSmoothingTime: 0.25
-  airPrefab: {fileID: 7586497684527177413, guid: e73572fafa287804f92e1635371a0121,
+  airPrefab: {fileID: 2471326607811685647, guid: 9e187974935c1e84287c7318421f26b3,
     type: 3}
   airEjectSpeed: 2
   airParticleMultiplier: 10
