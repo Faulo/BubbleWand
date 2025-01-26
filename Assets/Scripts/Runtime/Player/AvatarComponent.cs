@@ -20,6 +20,10 @@ namespace BubbleWand.Player {
         [SerializeField, Expandable]
         Transform mouth = default;
         [SerializeField, Expandable]
+        Transform bubblePivot = default;
+        [SerializeField, Expandable]
+        Transform bubbleWand = default;
+        [SerializeField, Expandable]
         ParticleSystem blowParticles = default;
         [SerializeField, Expandable]
         CinemachineVirtualCamera cinemachineCamera = default;
@@ -43,6 +47,8 @@ namespace BubbleWand.Player {
         public bool isRunning => movement.isRunning;
         public bool isBlowing => blow.isBlowing;
         public bool isAiming => aim.isAiming;
+        public bool canAim { get; private set; } = true;
+        public Rigidbody platform => movement.platform;
 
         [SerializeField]
         int m_jumpCount = 1;
@@ -62,8 +68,8 @@ namespace BubbleWand.Player {
             controls = Instantiate(controls);
             movement = new Movement(this, settings, controls.FindActionMap("Player"), character);
             look = new Look(this, settings, controls.FindActionMap("Player"), body, eyes, cinemachineCamera);
-            blow = new Blow(this, settings, controls.FindActionMap("Player"), mouth, blowParticles);
-            aim = new Aim(this, settings, controls.FindActionMap("Player"));
+            blow = new Blow(this, settings, controls.FindActionMap("Player"), mouth, bubblePivot, blowParticles);
+            aim = new Aim(this, settings, controls.FindActionMap("Player"), bubbleWand);
 
             onJumpCountChanged += () => settings.onJumpCountChanged.Invoke(gameObject);
         }
@@ -107,7 +113,5 @@ namespace BubbleWand.Player {
         void OnControllerColliderHit(ControllerColliderHit hit) {
             onControllerColliderHit?.Invoke(hit);
         }
-
-        public Rigidbody platform => movement.platform;
     }
 }

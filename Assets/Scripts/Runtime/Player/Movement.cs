@@ -97,8 +97,11 @@ namespace BubbleWand.Player {
         }
 
         void HandleHit(ControllerColliderHit hit) {
-            if (Vector3.Dot(hit.normal, Vector3.up) > 0.5f) {
+            if (Vector3.Dot(hit.normal, Vector3.up) > Mathf.Cos(character.slopeLimit * Mathf.Deg2Rad)) {
                 lastPlatform = hit.rigidbody;
+                if (hit.gameObject) {
+                    hit.gameObject.SendMessage(nameof(ICharacterMessages.OnLandOnPlatform), avatar, SendMessageOptions.DontRequireReceiver);
+                }
             }
         }
 
@@ -147,6 +150,10 @@ namespace BubbleWand.Player {
                         currentVelocity.x += targetMovement.x * settings.jumpStartSpeed.x;
                         currentVelocity.y = settings.jumpStartSpeed.y;
                         currentVelocity.z += targetMovement.y * settings.jumpStartSpeed.x;
+
+                        if (lastPlatform) {
+                            lastPlatform.SendMessage(nameof(ICharacterMessages.OnJumpFromPlatform), avatar, SendMessageOptions.DontRequireReceiver);
+                        }
                     }
 
                     break;
@@ -193,6 +200,7 @@ namespace BubbleWand.Player {
                 }
             }
         }
+
         void HandleJumpStart(InputAction.CallbackContext context) {
             intendsToJump = true;
         }
