@@ -1,15 +1,15 @@
 using BubbleWand.Player;
-using MyBox;
+using Slothsoft.UnityExtensions;
 using UnityEngine;
 
 namespace BubbleWand.Environment {
     sealed class LoadSceneByAvatar : MonoBehaviour {
-        [SerializeField]
-        SceneReference sceneToLoad = new();
+        [SerializeField, Expandable]
+        GameManager manager;
 
         void OnTriggerEnter(Collider other) {
             if (other.TryGetComponent<AvatarComponent>(out var avatar)) {
-                sceneToLoad.LoadScene();
+                manager.LoadMainMenu();
             }
         }
     }
