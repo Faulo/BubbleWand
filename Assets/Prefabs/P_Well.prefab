@@ -48,7 +48,7 @@ MonoBehaviour:
   airPrefab: {fileID: 6194424164280756027, guid: 536e48bb010fcf747a76f28f91c7f2df,
     type: 3}
   pivot: {fileID: 4442057322041430525}
-  ejectSpeed: 10
+  ejectSpeed: 5
   ticksPerAir: 2
 --- !u!1 &4815191696422149719
 GameObject:

@@ -54,6 +54,10 @@ namespace BubbleWand.Player {
                 if (!bubble) {
                     bubble = UnityObject.Instantiate(settings.bubblePrefab, mouth);
                     bubble.transform.localScale = Vector3.one * settings.startBlowSize;
+
+                    if (bubble.TryGetComponent<Rigidbody>(out var rigidbody)) {
+                        rigidbody.detectCollisions = false;
+                    }
                 }
 
                 bubble.transform.localScale += deltaTime * settings.blowGain * random;
@@ -63,6 +67,7 @@ namespace BubbleWand.Player {
                     bubble.transform.parent = null;
 
                     if (bubble.TryGetComponent<Rigidbody>(out var rigidbody)) {
+                        rigidbody.detectCollisions = true;
                         rigidbody.AddForce(avatar.velocity * settings.bubbleVelocityMultiplier, ForceMode.VelocityChange);
                         rigidbody.AddForce(settings.bubbleEjectScaling.Evaluate(blowing) * settings.bubbleEjectSpeed * mouth.forward, ForceMode.VelocityChange);
 
