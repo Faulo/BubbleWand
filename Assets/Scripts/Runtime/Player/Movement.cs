@@ -33,6 +33,13 @@ namespace BubbleWand.Player {
 
         float stepDistance;
         float airDistance;
+
+        public Rigidbody platform => character.isGrounded
+            ? lastPlatform
+            : null;
+
+        Rigidbody lastPlatform;
+
         public bool isRunning => input["Sprint"].phase == InputActionPhase.Performed && intendedMovement != Vector2.zero;
 
         public Movement(IAvatar avatar, AvatarSettings settings, InputActionMap input, CharacterController character) {
@@ -41,10 +48,14 @@ namespace BubbleWand.Player {
             this.character = character;
             this.input = input;
 
+            avatar.onControllerColliderHit += HandleHit;
+
             RegisterInput();
         }
 
         public void Dispose() {
+            avatar.onControllerColliderHit -= HandleHit;
+
             UnregisterInput();
         }
 
@@ -62,6 +73,11 @@ namespace BubbleWand.Player {
             ProcessJump();
 
             targetVelocity.y = currentVelocity.y;
+
+            if (avatar.platform) {
+                targetVelocity += avatar.platform.velocity;
+            }
+
             currentVelocity = Vector3.SmoothDamp(currentVelocity, targetVelocity, ref acceleration, settings.smoothingTime);
 
             float gravity = Physics.gravity.y * deltaTime;
@@ -78,6 +94,12 @@ namespace BubbleWand.Player {
             var position = avatar.position;
             character.Move(currentVelocity * deltaTime);
             ProcessStep(Vector3.Distance(position, avatar.position));
+        }
+
+        void HandleHit(ControllerColliderHit hit) {
+            if (Vector3.Dot(hit.normal, Vector3.up) > 0.5f) {
+                lastPlatform = hit.rigidbody;
+            }
         }
 
         void ProcessStep(float deltaStep) {

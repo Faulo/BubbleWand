@@ -107,5 +107,7 @@ namespace BubbleWand.Player {
         void OnControllerColliderHit(ControllerColliderHit hit) {
             onControllerColliderHit?.Invoke(hit);
         }
+
+        public Rigidbody platform => movement.platform;
     }
 }
