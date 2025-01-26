@@ -47,7 +47,7 @@ namespace BubbleWand.Player {
         public bool isRunning => movement.isRunning;
         public bool isBlowing => blow.isBlowing;
         public bool isAiming => aim.isAiming;
-        public bool canAim { get; private set; } = true;
+        public bool canAim { get; internal set; }
         public Rigidbody platform => movement.platform;
 
         [SerializeField]
