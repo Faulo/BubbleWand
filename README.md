@@ -1,4 +1,4 @@
-# Global Game Jam 2025
+# Bubble Wand
 As little woodland spirit you climb down into the deepest caves to do your job as the gardener of the forest.
 
 ## Credits
